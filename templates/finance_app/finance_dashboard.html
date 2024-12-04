@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finance</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'img/financial-profit.png' %}" />
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+  <body>
+    {% block content %}
+    <div class="container">
+
+      <h3>Price Direction Distribution (Pie Chart)</h3>
+      <div>{{ pie_chart_div|safe }}</div>
+
+      <h3>Candlestick Chart</h3>
+      <div>{{ candlestick_div|safe }}</div>
+
+      <h3>Moving Average (Line Chart)</h3>
+      <div>{{ line_chart_div|safe }}</div>
+
+      <h3>Volume (Bar Chart)</h3>
+      <div>{{ volume_chart_div|safe }}</div>
+
+      <h3>Scatter Plot</h3>
+      <div>{{ scatter_chart_div|safe }}</div>
+
+      <h3>Histogram</h3>
+      <div>{{ histogram_chart_div|safe }}</div>
+
+      <h3>Box Plot</h3>
+      <div>{{ box_chart_div|safe }}</div>
+
+      <h3>Area Chart</h3>
+      <div>{{ area_chart_div|safe }}</div>
+
+      <h3>Dual Axis Line Chart</h3>
+      <div>{{ dual_axis_chart_div|safe }}</div>
+
+      <h3>Heatmap</h3>
+      <div>{{ heatmap_chart_div|safe }}</div>
+
+      <h3>Step Chart</h3>
+      <div>{{ step_chart_div|safe }}</div>
+    </div>
+
+    {% endblock %}
+  </body>
+</html>
