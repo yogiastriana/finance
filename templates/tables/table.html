@@ -1,0 +1,841 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>yogiastriana</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'img/financial-profit.png' %}" />
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
+
+    <script src="{% static 'js/sb-admin-2.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet" />
+
+    <style>
+      .select2-container .select2-search--inline {
+        width: 100%;
+      }
+      .select2-container--default .select2-selection--multiple .select2-selection__rendered,
+      .select2-container--default .select2-selection--multiple .select2-selection__clear {
+        display: none !important;
+      }
+      .select2-container--default .select2-search--inline .select2-search__field {
+        padding: 5px;
+        margin-top: 0;
+        line-height: 20px;
+      }
+      .select2-container--default .select2-selection--multiple .select2-selection__choice .select2-selection__choice__remove {
+        color: #000;
+      }
+      .table td {
+        padding: 0.25rem 0.75rem;
+      }
+      #companyTable td {
+        padding: 0.5rem;
+      }
+      .select2-container {
+        width: 100%;
+      }
+      .select2-container--default .select2-results__option[aria-disabled='true'] {
+        visibility: hidden;
+        height: 0;
+        padding: 0;
+      }
+      .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #619040;
+      }
+      #ticker-search-container {
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: auto 150px;
+      }
+      #ticker-asset-number-container {
+        padding: 5px;
+        line-height: 20px;
+      }
+    
+      table .form-control {
+        font-size: 12px;
+      }
+    
+      .custom-input-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .custom-input-group > div {
+        width: 50%;
+      }
+      .custom-input-group .form-label,
+      .custom-input-group .form-control {
+        font-size: 12px;
+      }
+    
+      .select2-container .select2-search--inline {
+        height: 40px;
+      }
+    
+      .form-ticker-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+    
+      .table-responsive {
+        margin-bottom: 15px;
+        max-height: 750px;
+      }
+    
+      .submit-btn-container {
+        text-align: right;
+        margin-top: auto;
+      }
+    
+      .btn.btn-danger {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+      }
+    
+      #tickerSectorPiechart {
+        margin-top: 25px;
+      }
+    
+      .input-form-row {
+        display: grid;
+        grid-template-columns: 600px auto;
+        grid-gap: 20px;
+      }
+    
+      .table thead th {
+        font-size: 13px;
+      }
+    </style>
+    
+  </head>
+
+  <body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+          <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+          </div>
+          <div class="sidebar-brand-text mx-3">Admin</div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+          <a class="nav-link" href="#">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a
+          >
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider" />
+
+        <!-- Heading -->
+        <!-- <div class="sidebar-heading">Interface</div> -->
+
+        <!-- Nav Item - Charts -->
+        <!-- Candelstick  -->
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'finance_dashboard'  %}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>CHARTS</span></a
+          >
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider" />
+
+        <!-- Heading -->
+        <div class="sidebar-heading">Addons</div>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Pages</span>
+          </a>
+          <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <!-- <h6 class="collapse-header">Login Screens:</h6> -->
+              <a class="collapse-item" href="#">Login</a>
+              <a class="collapse-item" href="#">Register</a>
+              <a class="collapse-item" href="#">Forgot Password</a>
+              <div class="collapse-divider"></div>
+            </div>
+          </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block" />
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+          <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
+      </ul>
+      <!-- End of Sidebar -->
+
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          <!-- Topbar -->
+          <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top position-sticky shadow">
+            <!-- Sidebar Toggle (Topbar) -->
+            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+              <i class="fa fa-bars"></i>
+            </button>
+
+            <!-- Topbar Search -->
+            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+              <div class="input-group">
+                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <!-- Topbar Navbar -->
+            <ul class="navbar-nav ml-auto">
+              <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+              <li class="nav-item dropdown no-arrow d-sm-none">
+                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-search fa-fw"></i>
+                </a>
+                <!-- Dropdown - Messages -->
+                <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                  <form class="form-inline mr-auto w-100 navbar-search">
+                    <div class="input-group">
+                      <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
+                      <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                          <i class="fas fa-search fa-sm"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </li>
+
+              <!-- Nav Item - Alerts -->
+              <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-bell fa-fw"></i>
+                  <!-- Counter - Alerts -->
+                  <span class="badge badge-danger badge-counter">3+</span>
+                </a>
+                <!-- Dropdown - Alerts -->
+                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                  <h6 class="dropdown-header">Alerts Center</h6>
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="mr-3">
+                      <div class="icon-circle bg-primary">
+                        <i class="fas fa-file-alt text-white"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="small text-gray-500">December 12, 2019</div>
+                      <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                    </div>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="mr-3">
+                      <div class="icon-circle bg-success">
+                        <i class="fas fa-donate text-white"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="small text-gray-500">December 7, 2019</div>
+                      $290.29 has been deposited into your account!
+                    </div>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="mr-3">
+                      <div class="icon-circle bg-warning">
+                        <i class="fas fa-exclamation-triangle text-white"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="small text-gray-500">December 2, 2019</div>
+                      Spending Alert: We've noticed unusually high spending for your account.
+                    </div>
+                  </a>
+                  <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                </div>
+              </li>
+
+              <!-- Nav Item - Messages -->
+              <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-envelope fa-fw"></i>
+                  <!-- Counter - Messages -->
+                  <span class="badge badge-danger badge-counter">7</span>
+                </a>
+                <!-- Dropdown - Messages -->
+                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+                  <h6 class="dropdown-header">Message Center</h6>
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="dropdown-list-image mr-3">
+                      <img class="rounded-circle" src="{% static 'img/undraw_profile_1.svg' %}" alt="..." />
+                      <div class="status-indicator bg-success"></div>
+                    </div>
+                    <div class="font-weight-bold">
+                      <div class="text-truncate">Hi there! I am wondering if you can help me with a problem I've been having.</div>
+                      <div class="small text-gray-500">Emily Fowler · 58m</div>
+                    </div>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="dropdown-list-image mr-3">
+                      <img class="rounded-circle" src="{% static 'img/undraw_profile_2.svg' %}" alt="..." />
+                      <div class="status-indicator"></div>
+                    </div>
+                    <div>
+                      <div class="text-truncate">I have the photos that you ordered last month, how would you like them sent to you?</div>
+                      <div class="small text-gray-500">Jae Chun · 1d</div>
+                    </div>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="dropdown-list-image mr-3">
+                      <img class="rounded-circle" src="{% static 'img/undraw_profile_3.svg' %}" alt="..." />
+                      <div class="status-indicator bg-warning"></div>
+                    </div>
+                    <div>
+                      <div class="text-truncate">Last month's report looks great, I am very happy with the progress so far, keep up the good work!</div>
+                      <div class="small text-gray-500">Morgan Alvarez · 2d</div>
+                    </div>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="dropdown-list-image mr-3">
+                      <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="..." />
+                      <div class="status-indicator bg-success"></div>
+                    </div>
+                    <div>
+                      <div class="text-truncate">Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</div>
+                      <div class="small text-gray-500">Chicken the Dog · 2w</div>
+                    </div>
+                  </a>
+                  <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                </div>
+              </li>
+
+              <div class="topbar-divider d-none d-sm-block"></div>
+
+              <!-- Nav Item - User Information -->
+              <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                  <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
+                </a>
+                <!-- Dropdown - User Information -->
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                  <a class="dropdown-item" href="#">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Profile
+                  </a>
+                  <a class="dropdown-item" href="#">
+                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Settings
+                  </a>
+                  <a class="dropdown-item" href="#">
+                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Activity Log
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Logout
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </nav>
+          <!-- End of Topbar -->
+
+          
+          <!-- Start Tabels -->
+          {% block content %}
+          
+          <div class="main-panel">
+            <div class="content-wrapper">
+              <form method="POST">
+                {% csrf_token %}
+                <div class="input-form-row">
+                  <!-- Left Start -->
+                  <div class="">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="card">
+                              <div class="card-body">
+                                <div class="custom-input-group d-flex align-items-center">
+                                  <label class="form-label mb-0" style="margin-right: 10px; white-space: nowrap;">Select Run:</label>
+                                  <select class="form-control" name="return_calculation" style="flex: 1;">
+                                    <option value="Arithmetic">Select Saved Run</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-lg-3">
+                            <div class="p-2 rounded-2 bg-branding mt-2 mb-3 bg-primary text-white">Dates</div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">Start Date</label>
+                              </div>
+                              <div>
+                                <input type="date" class="form-control p-2" name="start_date" value="2020-01-01" />
+                              </div>
+                            </div>
+                            <div class="custom-input-group mb-4">
+                              <div>
+                                <label class="form-label">End Date</label>
+                              </div>
+                              <div>
+                                <input type="date" class="form-control p-2" name="end_date" value="2024-01-01" />
+                              </div>
+                            </div>
+                            <div class="p-2 rounded-2 bg-branding mt-2 mb-3 bg-primary text-white">Calculation Inputs</div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">Return Calculation</label>
+                              </div>
+                              <div>
+                                <select class="form-control p-2" name="return_calculation">
+                                  <option value="Arithmetic">Arithmetic</option>
+                                  <option value="Logarithmic">Logarithmic</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">Price Frequency</label>
+                              </div>
+                              <div>
+                                <select class="form-control p-2" name="price_frequency">
+                                  <option value="Daily">Daily</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">Risk Free Rate</label>
+                              </div>
+                              <div>
+                                <input class="form-control p-2" name="risk_free_rate" value="0" />
+                              </div>
+                            </div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">Investment Amount</label>
+                              </div>
+                              <div>
+                                <input class="form-control p-2" name="invested_amount" value="10000" />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-lg-3">
+                            <div class="p-2 rounded-2 bg-branding mt-2 mb-3 bg-primary text-white">Portfolio Optimization Inputs</div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">Benchmark Portfolio</label>
+                              </div>
+                              <div>
+                                <select class="form-control p-2" name="benchmark_portfolio">
+                                  <option value="market_cap_weight">Market Cap Weight</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">TRV (Min)</label>
+                              </div>
+                              <div>
+                                <input type="number" class="form-control p-2" name="target_return_for_min_volatility" step="0.25" value="0.25" />
+                              </div>
+                            </div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">TVR (Max)</label>
+                              </div>
+                              <div>
+                                <input type="number" class="form-control p-2" name="target_volatility_for_max_return" step="0.25" value="0.25" />
+                              </div>
+                            </div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">Default Win Weight</label>
+                              </div>
+                              <div>
+                                <input type="number" class="form-control p-2" name="default_min_weight" step="0.01" value="0" />
+                              </div>
+                            </div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">Default Max Weight</label>
+                              </div>
+                              <div>
+                                <input type="number" class="form-control p-2" name="default_max_weight" step="0.01" value="1" />
+                              </div>
+                            </div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">Frontier Runs</label>
+                              </div>
+                              <div>
+                                <input type="number" class="form-control p-2" name="frontier_runs" step="1" value="100" />
+                              </div>
+                            </div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">MC Simulations</label>
+                              </div>
+                              <div>
+                                <input type="number" class="form-control p-2" name="monte_carlo_simulations" step="1" value="10000" />
+                              </div>
+                            </div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">Solver</label>
+                              </div>
+                              <div>
+                                <select class="form-control p-2" name="solver">
+                                  <option value="CLARABEL">CLARABEL</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="custom-input-group">
+                              <div>
+                                <label class="form-label">Dendogram Segment</label>
+                              </div>
+                              <div>
+                                <select class="form-control p-2" name="dendogram_segment">
+                                  <option value="Sector">Sector</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-lg-6">
+                            <div class="card-body">
+                              <div class="form-ticker-container">
+                                <div id="ticker-search-container" class="mb-2" style="display: flex; align-items: center; gap: 10px;">
+                                  <select id="stockSelect" class="stock-select form-control">
+                                    <!-- Options akan ditambahkan secara dinamis -->
+                                  </select>
+                                  <div id="ticker-asset-number-container" style="display: flex; align-items: center;">
+                                    Assets: <span id="ticker-asset-number">0</span>
+                                  </div>
+                                </div>
+                          
+                                <div class="table-responsive">
+                                  <table class="table">
+                                    <thead class="bg-branding bg-primary text-white">
+                                      <tr>
+                                        <th class="p-1">#</th>
+                                        <th class="p-1">Ticker</th>
+                                        <th class="p-1">Company</th>
+                                        <th class="p-1">Sector</th>
+                                        <th class="p-1">Industry</th>
+                                        <th class="p-1">MC</th>
+                                        <th class="p-1">PC</th>
+                                        <th class="p-1">Beta</th>
+                                        <th class="p-1" style="max-width: 58px">BM</th>
+                                        <th class="p-1" style="max-width: 55px">Min</th>
+                                        <th class="p-1" style="max-width: 55px">Max</th>
+                                        <th class="p-1">Correlation</th>
+                                        <th class="p-1"></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="companyTable">
+                                      <!-- Data akan dimasukkan secara dinamis -->
+                                    </tbody>
+                                  </table>
+                                </div>
+                          
+                                <div class="submit-btn-container mt-3" style="text-align: end;">
+                                  <button type="submit" class="btn bg-primary text-white">Process</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Left End -->
+                </div>
+              </form>
+            </div>
+          </div>
+
+         
+          <!-- End Tabels -->
+
+
+          <!-- data dummy -->
+          <script>
+            // Data Dummy
+            const dummyData = [
+                              {
+                                ticker: "AAPL",
+                                company: "Apple Inc.",
+                                sector: "Technology",
+                                industry: "Consumer Electronics",
+                                market_cap: 3448289886208,
+                                previous_close: "12345678",
+                                beta: "Beta",
+                                benchmark: 0,
+                                amin: 0,
+                                amax: 1,
+                                correlation: "afddsaf",
+                              },
+                              {
+                                ticker: "NVDA",
+                                company: "NVIDIA Corporation",
+                                sector: "Technology",
+                                industry: "Semiconductors",
+                                market_cap: 3064287461376,
+                                previous_close: "12345678",
+                                beta: "Beta",
+                                benchmark: 0,
+                                amin: 0,
+                                amax: 1,
+                                correlation: "afddsaf",
+                              },
+                              {
+                                ticker: "GOOGL",
+                                company: "Alphabet Inc.",
+                                sector: "Technology",
+                                industry: "Internet Content & Information",
+                                market_cap: 1900000000000,
+                                previous_close: "2234.50",
+                                beta: "1.2",
+                                benchmark: 0.02,
+                                amin: 0.1,
+                                amax: 1.5,
+                                correlation: "0.8",
+                              },
+                              {
+                                ticker: "AMZN",
+                                company: "Amazon.com, Inc.",
+                                sector: "Consumer Services",
+                                industry: "Retail",
+                                market_cap: 1700000000000,
+                                previous_close: "3389.50",
+                                beta: "1.3",
+                                benchmark: 0.03,
+                                amin: 0.2,
+                                amax: 1.7,
+                                correlation: "0.75",
+                              },
+                              {
+                                ticker: "MSFT",
+                                company: "Microsoft Corporation",
+                                sector: "Technology",
+                                industry: "Software - Infrastructure",
+                                market_cap: 2200000000000,
+                                previous_close: "301.15",
+                                beta: "0.9",
+                                benchmark: 0.01,
+                                amin: 0.05,
+                                amax: 1.2,
+                                correlation: "0.85",
+                              },
+                              {
+                                ticker: "TSLA",
+                                company: "Tesla, Inc.",
+                                sector: "Consumer Durables",
+                                industry: "Automobiles",
+                                market_cap: 850000000000,
+                                previous_close: "703.50",
+                                beta: "1.8",
+                                benchmark: 0.04,
+                                amin: 0.3,
+                                amax: 2.0,
+                                correlation: "0.6",
+                              },
+                              {
+                                ticker: "META",
+                                company: "Meta Platforms, Inc.",
+                                sector: "Technology",
+                                industry: "Social Media",
+                                market_cap: 950000000000,
+                                previous_close: "352.50",
+                                beta: "1.1",
+                                benchmark: 0.02,
+                                amin: 0.1,
+                                amax: 1.4,
+                                correlation: "0.7",
+                              },
+                              {
+                                ticker: "INTC",
+                                company: "Intel Corporation",
+                                sector: "Technology",
+                                industry: "Semiconductors",
+                                market_cap: 2000000000000,
+                                previous_close: "57.40",
+                                beta: "1.2",
+                                benchmark: 0.03,
+                                amin: 0.15,
+                                amax: 1.3,
+                                correlation: "0.8",
+                              },
+                              {
+                                ticker: "NFLX",
+                                company: "Netflix, Inc.",
+                                sector: "Consumer Services",
+                                industry: "Entertainment",
+                                market_cap: 300000000000,
+                                previous_close: "586.50",
+                                beta: "1.5",
+                                benchmark: 0.05,
+                                amin: 0.25,
+                                amax: 1.8,
+                                correlation: "0.65",
+                              },
+                              {
+                                ticker: "DIS",
+                                company: "The Walt Disney Company",
+                                sector: "Consumer Services",
+                                industry: "Media - Diversified",
+                                market_cap: 350000000000,
+                                previous_close: "171.80",
+                                beta: "1.0",
+                                benchmark: 0.02,
+                                amin: 0.2,
+                                amax: 1.4,
+                                correlation: "0.9",
+                              },
+                              {
+                                ticker: "BABA",
+                                company: "Alibaba Group Holding Limited",
+                                sector: "Technology",
+                                industry: "E-Commerce",
+                                market_cap: 540000000000,
+                                previous_close: "179.90",
+                                beta: "1.3",
+                                benchmark: 0.04,
+                                amin: 0.15,
+                                amax: 1.6,
+                                correlation: "0.72",
+                              },
+                              {
+                                ticker: "V",
+                                company: "Visa Inc.",
+                                sector: "Financials",
+                                industry: "Credit Services",
+                                market_cap: 800000000000,
+                                previous_close: "229.10",
+                                beta: "0.9",
+                                benchmark: 0.02,
+                                amin: 0.1,
+                                amax: 1.3,
+                                correlation: "0.88",
+                              },
+                            ];
+
+            const stockSelect = document.getElementById("stockSelect");
+            const assetNumber = document.getElementById("ticker-asset-number");
+            const companyTable = document.getElementById("companyTable");
+            let assetCount = 0;
+          
+            // Tambahkan Data Dummy ke Dropdown
+            dummyData.forEach((data, index) => {
+              const option = document.createElement("option");
+              option.value = index;
+              option.textContent = `${data.ticker} - ${data.company}`;
+              stockSelect.appendChild(option);
+            });
+          
+            // Event Listener untuk Menambah Aset dan Memasukkan ke Tabel
+            stockSelect.addEventListener("change", function () {
+              const selectedIndex = parseInt(this.value);
+              console.log("Selected index:", selectedIndex);
+
+              if (!isNaN(selectedIndex)) {
+                const selectedData = dummyData[selectedIndex];
+          
+                // Tambahkan baris ke tabel
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                  <td>${assetCount + 1}</td>
+                  <td>${selectedData.ticker}</td>
+                  <td>${selectedData.company}</td>
+                  <td>${selectedData.sector}</td>
+                  <td>${selectedData.industry}</td>
+                  <td>${selectedData.market_cap}</td>
+                  <td>${selectedData.previous_close}</td>
+                  <td>${selectedData.beta}</td>
+                  <td>${selectedData.benchmark}</td>
+                  <td>${selectedData.amin}</td>
+                  <td>${selectedData.amax}</td>
+                  <td>${selectedData.correlation}</td>
+                  <td class="p-1">
+                            <button type="button" class="btn btn-danger remove-ticker-btn btn-sm">x</button>
+                        </td>
+                `;
+                companyTable.appendChild(row);
+          
+                // Update jumlah aset
+                assetCount++;
+                assetNumber.textContent = assetCount;
+          
+                // Hapus data dari dropdown untuk menghindari duplikasi
+                stockSelect.options[selectedIndex].remove();
+              }
+            });
+          </script>
+
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    // <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    // <!-- Custom scripts for all pages-->
+
+    // <!-- Page level plugins -->
+    <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+    // <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+    <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+
+    {% endblock %}
+  </body>
+</html>

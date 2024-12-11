@@ -23,7 +23,7 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet" />
 
-    <style>
+    <!-- <style>
       #accordionSidebar {
         position: fixed;
         top: 0;
@@ -47,7 +47,7 @@
       #accordionSidebar {
         width: 250px;
       }
-    </style>
+    </style> -->
   </head>
 
   <body id="page-top">
@@ -92,6 +92,13 @@
         <!-- Divider -->
         <hr class="sidebar-divider" />
 
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'table'  %}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>TABLES</span></a
+          >
+        </li>
+
         <!-- Heading -->
         <div class="sidebar-heading">Addons</div>
 
@@ -116,9 +123,9 @@
         <hr class="sidebar-divider d-none d-md-block" />
 
         <!-- Sidebar Toggler (Sidebar) -->
-        <!-- <div class="text-center d-none d-md-inline">
+        <div class="text-center d-none d-md-inline">
           <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div> -->
+        </div>
       </ul>
       <!-- End of Sidebar -->
 
@@ -305,7 +312,7 @@
           <div class="container-fluid">
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-              <h1 class="h3 mb-0 text-gray-800">Finance Dashboard</h1>
+              <!-- <h1 class="h3 mb-0 text-gray-800">Finance Dashboard</h1> -->
               <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
             </div>
 
@@ -364,7 +371,7 @@
     <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
     <!-- Custom scripts for all pages-->
-
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
     <!-- Page level plugins -->
     <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
 

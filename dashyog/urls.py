@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', dashboard_view, name='dashboard'),
     path('', include('finance_app.urls')),
+    path('', include('tables.urls')),
 ]

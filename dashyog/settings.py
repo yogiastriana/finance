@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'dashapp',
     'finance_app',
+    'tables',
 ]
 
 MIDDLEWARE = [
